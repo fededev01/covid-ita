@@ -1,8 +1,7 @@
 import requests
 import json
-import numpy as  np
+import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt 
 
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json'
 reponse = requests.get(url)
@@ -12,7 +11,7 @@ conf = []
 tamp = []
 mor = []
 for i in dati:
-  conf.append(i["totale-casi"])
+  conf.append(i["totale_casi"])
   tamp.append(i["tamponi"])
   mor.append(i["deceduti"])
 
@@ -33,10 +32,11 @@ nuovi_tamponi = dieci - otto
 nuovi_m = nuovi_morti.reshape(len(mor), 1)
 nuovi_t = nuovi_tamponi.reshape(len(mor), 1)
 
-dates = pd.date_range('4', periods = len(tamp))
+dates = pd.date_range('20200224', periods = len(tamp))
 df = pd.DataFrame(index = dates)
 df['tamponi'] = tamp
 df['confermati'] = conf
 df['deceduti'] = mor
 df['nuovi morti'] = nuovi_m
 df['nuovi tamponi'] = nuovi_t    
+print(df)
