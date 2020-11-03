@@ -17,10 +17,6 @@ for i in dati:
   mor.append(i["deceduti"])
   n_pos.append(i["nuovi_positivi"])
 
-s = 0
-conf.append(s)
-tamp.append(s)
-mor.append(s)
 
 nuovi_morti = np.array([mor]) 
 n_m = np.diff(nuovi_morti)
