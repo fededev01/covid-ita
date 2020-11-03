@@ -2,7 +2,6 @@ import requests
 import json
 import numpy as np
 import pandas as pd
-from requests import NullHandler
 
 url = 'https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-json/dpc-covid19-ita-andamento-nazionale.json'
 reponse = requests.get(url)
@@ -11,36 +10,44 @@ dati = json.loads(reponse.content)
 conf = [] 
 tamp = []
 mor = []
+n_pos= []
 for i in dati:
   conf.append(i["totale_casi"])
   tamp.append(i["tamponi"])
   mor.append(i["deceduti"])
+  n_pos.append(i["nuovi_positivi"])
 
-#cambiare nome variabili
-cinq = np.array([mor])
-sei = mor[1: len(mor)]
-sei.append(mor[-1])
-set = np.array([sei])
-nuovi_morti = set - cinq
+s = 0
+conf.append(s)
+tamp.append(s)
+mor.append(s)
 
-otto = np.array([tamp])
-nove = tamp[1: len(tamp)]
-nove.append(tamp[-1])
-dieci = np.array([nove])
-nuovi_tamponi = dieci - otto
-#fine variabili da cambiare
+nuovi_morti = np.array([mor]) 
+n_m = np.diff(nuovi_morti)
+nuovi_m = n_m.reshape(len(conf), 1)
 
-nuovi_m = nuovi_morti.reshape(len(mor), 1)
-nuovi_m[-1] = nuovi_m[-2]
-nuovi_t = nuovi_tamponi.reshape(len(mor), 1)
-nuovi_t[-1] = nuovi_t[-2]
+nuovi_tamponi = np.array([tamp]) 
+n_t = np.diff(nuovi_tamponi)
+nuovi_t= n_t.reshape(len(conf), 1)
 
-dates = pd.date_range('20200224', periods = len(tamp))
+dates = pd.date_range('20200224', periods = len(mor))
 df = pd.DataFrame(index = dates)
 df['tamponi'] = tamp
 df['confermati'] = conf
 df['deceduti'] = mor
 df['nuovi morti'] = nuovi_m
 df['nuovi tamponi'] = nuovi_t  
-print(df)
 
+
+ter = []
+fir = np.array([n_pos])
+sec = np.divide(nuovi_t, n_pos)
+
+
+#llll = np.dot(media, 100)
+
+#ter = [i * 100 for i in n_pos]
+
+#perc = np.array([ter])
+df['prova'] = sec[0]
+print(df)
