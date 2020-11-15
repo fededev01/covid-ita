@@ -35,9 +35,4 @@ df['nuovi positivi'] = n_pos
 df['nuovi morti'] = nuovi_m
 df['nuovi tamponi'] = nuovi_t 
  
-ter = []
-fir = np.array([n_pos])
-sec = np.divide(n_pos, nuovi_t)
-
-df['rapp pos/tamp'] = sec[0]
 print(df)
